@@ -15,13 +15,27 @@ class Home extends Component {
   };
 
   componentDidMount() {
-    fetch("https://vv-backend-eud6.onrender.com/getfeaturedproducts")
-      .then((res) => res.json())
-      .then((data) => {
-        this.setState({ products: data });
+    fetch("https://vv-backend-eud6.onrender.com")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+        return res.json();
       })
-      .catch(console.log);
+      .then((data) => {
+        if (Array.isArray(data)) {
+          this.setState({ products: data });
+        } else {
+          console.error("Invalid response format:", data);
+          this.setState({ products: [] });
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching featured products:", err);
+        this.setState({ products: [] }); // Ensure products is an empty array on failure
+      });
   }
+
 
   render() {
     return (

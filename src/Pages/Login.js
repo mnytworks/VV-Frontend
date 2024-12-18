@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Axios from "axios"; // for making http requests
+import Axios from "axios"; // for making HTTP requests
 import GoogleButton from "react-google-button";
 import { useHistory } from "react-router-dom"; // Import for navigation in React Router v5
 
@@ -24,12 +24,18 @@ export default function Login() {
         mobile: registerMobile,
         email: registerEmail,
       },
+      headers: { "Content-Type": "application/json" }, // Set header
       withCredentials: true,
       url: "https://vv-backend-eud6.onrender.com/register",
-    }).then((res) => {
-      console.log(res);
-      alert(res.data);
-    });
+    })
+      .then((res) => {
+        console.log(res);
+        alert(res.data);
+      })
+      .catch((err) => {
+        console.error("Registration Error:", err);
+        alert("Registration failed! Please try again.");
+      });
   };
 
   // Login function with admin check
@@ -41,6 +47,7 @@ export default function Login() {
         password: loginPassword,
         adminCode: adminCode, // Send the admin code for validation
       },
+      headers: { "Content-Type": "application/json" },
       withCredentials: true,
       url: "https://vv-backend-eud6.onrender.com/login",
     })
@@ -51,6 +58,7 @@ export default function Login() {
           history.push("/editproduct"); // Redirect to EditProduct page if admin
         } else if (res.data.message === "User logged in") {
           alert("Login successful!");
+          history.push("/profile"); // Redirect to user profile after login
         } else {
           alert(res.data.message); // Display any errors
         }
@@ -61,8 +69,12 @@ export default function Login() {
       });
   };
 
+  // Google OAuth Authentication
   const googleAuth = () => {
-    window.open("https://vv-backend-eud6.onrender.com/google");
+    window.open(
+      "https://vv-backend-eud6.onrender.com/google",
+      "_self" // Open the redirect link in the same tab
+    );
   };
 
   return (
@@ -92,7 +104,8 @@ export default function Login() {
         <br />
         <button onClick={register}>Submit</button>
       </div>
-      <br /><br />
+      <br />
+      <br />
 
       <div>
         <h1>Login</h1>
@@ -112,14 +125,15 @@ export default function Login() {
           onChange={(e) => setAdminCode(e.target.value)}
         />
         <br />
-        <button onClick={login}>Continue</button><br/>
+        <button onClick={login}>Continue</button>
+        <br />
 
         <center>
-          <GoogleButton onClick={googleAuth}/>
+          <GoogleButton onClick={googleAuth} />
         </center>
-
       </div>
-      <br /><br />
+      <br />
+      <br />
     </div>
   );
 }
