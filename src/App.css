@@ -1,0 +1,563 @@
+/* This is the main CSS file that we will add to. Linked to App.js */
+
+/*************************
+   Default CSS stylings
+*************************/
+
+/***********************
+Color palette of FSHN:
+Black: #000000
+White: #ffffff
+Yellow: #edca0d
+Yellow': #faf160
+***********************/
+
+@font-face {
+  font-family: "fonty";
+  src: URL("font.ttf") format("truetype");
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  background-color: #ffffff;
+  font-family: "fonty";
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 80px;
+  overflow-x: hidden;
+}
+
+.heading {
+  font-size: 30px;
+  padding: 16px 0;
+  color: #444;
+  text-align: center;
+}
+
+ul,
+li {
+  list-style-type: none;
+}
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+a {
+  color: #edca0d;
+}
+
+a:hover {
+  color: #faf160;
+}
+
+.footer {
+  background-color: #000000;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+  bottom: 0;
+  height: 17%;
+  width: 100%;
+  font-size: large;
+  margin-top: 5%;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+}
+
+input {
+  margin: 0.5%;
+  width: 33%;
+}
+
+button {
+  border-radius: 0px;
+  transition-duration: 0.4s;
+  background-color: black;
+  color: white;
+  border: none;
+  width: 15rem;
+  height: auto;
+  font-size: large;
+  margin: 5%;
+}
+
+button:hover {
+  border-radius: 0px;
+  background-color: black;
+  color: #edca0d;
+}
+
+label {
+  padding: 3%;
+  font-size: large;
+}
+
+/*************************
+      1. Home Page
+*************************/
+
+.banner {
+  margin: 0%;
+  margin-top: 0px;
+}
+
+.btn {
+  background: #000000;
+  width: 200px;
+  height: 75px;
+  position: relative;
+  border: none;
+  cursor: pointer;
+  margin: 15px;
+}
+
+.btn:focus {
+  border: none;
+  box-shadow: none;
+  background: #000000;
+}
+
+.btn:hover {
+  background: #000000;
+}
+
+.spiral-top::before,
+.spiral-top::after,
+.spiral-bottom::before,
+.spiral-bottom::after {
+  content: " ";
+  background: #edca0d;
+  position: absolute;
+  -webkit-box-shadow: 0 0 10px 0 #edca0d;
+  box-shadow: 0 0 10px 0 #edca0d;
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+}
+
+.spiral-top::before {
+  top: 0px;
+  left: 0px;
+  width: 5px;
+  height: 0px;
+}
+.spiral-top::after {
+  top: 0px;
+  right: 0px;
+  width: 0px;
+  height: 5px;
+}
+.spiral-bottom::before {
+  bottom: 0px;
+  left: 0px;
+  width: 0px;
+  height: 5px;
+}
+.spiral-bottom::after {
+  bottom: 0px;
+  right: 0px;
+  width: 5px;
+  height: 0px;
+}
+
+.btn:hover
+.spiral-top::before {
+  height: 75px;
+}
+.btn:hover
+.spiral-top::after {
+  width: 200px;
+}
+.btn:hover
+.spiral-bottom::before {
+  width: 200px;
+}
+.btn:hover
+.spiral-bottom::after {
+  height: 75px;
+}
+
+.swiper-container {
+  width: 100%;
+  height: 90%;
+}
+.swiper-slide {
+  margin-top: 0%;
+  text-align: center;
+  background: #fff;
+ /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container-general {
+  padding: 75px 0;
+  padding-top: 0%;
+  margin: 0 auto;
+  margin-top: -2%;
+  margin-bottom: 2%;
+  width: 90%;
+}
+.container-general .gallery-wrap {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 70vh;
+}
+.container-general .gallery-wrap .item {
+  flex: 1;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: none;
+  transition: all 0.8s ease;
+  filter: grayscale(100%);
+}
+.container-general .gallery-wrap .item:hover {
+  flex: 4;
+  filter: grayscale(0%);
+}
+.wrap-effect-1 .item:first-of-type {
+  background-image: url('https://res.cloudinary.com/dl6m7txan/image/upload/v1602429756/5_z5df6a.jpg');
+}
+.wrap-effect-1 .item:nth-of-type(2) {
+  background-image: url('https://res.cloudinary.com/dl6m7txan/image/upload/v1602429776/15_rczfii.jpg');
+}
+.wrap-effect-1 .item:nth-of-type(3) {
+  background-image: url('https://res.cloudinary.com/dl6m7txan/image/upload/v1602429756/6_whg2sv.jpg');
+}
+.wrap-effect-1 .item:nth-of-type(4) {
+  background-image: url('https://res.cloudinary.com/dl6m7txan/image/upload/v1602429757/8_tsvgx9.jpg');
+}
+.wrap-effect-1 .item:last-of-type {
+  background-image: url('https://res.cloudinary.com/dl6m7txan/image/upload/v1602429780/43_ejjayj.jpg');
+}
+
+/*************************
+      2. Shop Page
+*************************/
+
+.search-bar {
+  font-size: x-large;
+  z-index: 1;
+  position: relative;
+  padding: 0;
+  padding-top: 5vh;
+  margin: 0;
+  left: 30px;
+  background-position: center;
+}
+
+.search {
+  width: 65%;
+}
+
+.search:hover {
+  box-shadow: #000000;
+}
+
+.search-icon {
+  position: relative;
+  z-index: 1;
+  width: 65px;
+  height: 65px;
+  right: 60px;
+  top: -5px;
+}
+
+.products-container {
+  margin-top: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  font: inherit;
+  list-style-type: none;
+  font-family: "fonty";
+}
+
+.products li {
+  max-width: 30rem;
+  list-style-type: none;
+  padding: 0;
+  flex: 0 1 30rem;
+  margin: 1rem;
+  height: 47rem;
+  border-bottom: 0.1rem #c0c0c0 solid;
+}
+
+.product {
+  width: 30rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.product-name {
+  font-size: 2.2rem;
+  font-weight: bold;
+}
+
+.product-brand {
+  font-size: 1.5rem;
+  color: #808080;
+  padding-top: 0;
+}
+
+.product-price {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.product-image {
+  max-width: 30rem;
+  max-height: 34rem;
+  /* filter: grayscale(100%); */
+}
+
+.product-image:hover {
+  filter: grayscale(0%);
+  transform: scale(0.9);
+}
+
+.product-rating {
+  margin-bottom: 1rem;
+  font-size: small;
+}
+
+/*************************
+     3. Product Page
+*************************/
+
+.product-container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.item-a {
+  flex: 4;
+  margin-left: 5%;
+}
+
+.item-b {
+  margin-right: 7.5%;
+  padding: 5%;
+  flex: 3;
+}
+
+.image {
+  width: 60%;
+  height: 80%;
+}
+
+
+.review-list-container {
+  list-style-type: none;
+  padding: 2%;
+  font-size: large;
+  line-height: 3rem;
+  background-color: white;
+  width: 50%;
+}
+
+.review-list-container li {
+  display: flex;
+  padding: 2%;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid black;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  width: 100%;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+
+.review {
+  word-wrap: break-word;
+  overflow: hidden;
+}
+
+textarea {
+  width: 100%;
+}
+
+.review-btn {
+  background-color: black;
+  color: white; 
+  font-size: 2rem;
+  border: none;
+}
+
+.review-btn:hover {
+  background-color: black;
+  color: #edca0d;
+}
+
+/*************************
+      4. Cart Page
+*************************/
+
+.cart {
+  padding-top: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1rem;
+  align-items: flex-start;
+}
+
+.shopping-cart {
+  font-size: x-large;
+  padding: 0;
+  margin-top: -1rem;
+}
+
+.qty {
+  font-size: medium;
+}
+
+.cart-list {
+  flex: 3 1 40rem;
+}
+
+.cart-action {
+  flex: 1 1 25rem;
+  background-color: #f0f0f0;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-top: 2rem;
+  font-size: medium;
+}
+
+.cart-list-container {
+  list-style-type: none;
+  padding: 3rem;
+  font-size: large;
+  line-height: 3rem;
+}
+
+.cart-list-container li {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 0.1rem #c0c0c0 solid;
+}
+
+.cart-list-container li img {
+  width: 16rem;
+  height: 20rem;
+  padding-right: 2rem;
+}
+
+.cart-list-container li:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.cart-image {
+  flex: 1 1;
+}
+
+.cart-name {
+  flex: auto;
+  width: auto;
+  font-size: 2.5rem;
+}
+
+.cart-price {
+  flex: 10;
+  font-size: larger;
+  text-align: right;
+}
+
+.cart-button {
+  display: inline;
+  font-size: medium;
+  width: 12rem;
+  height: 3rem;
+}
+
+/*************************
+      5. Login Page
+*************************/
+
+.login {
+  max-width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5%;
+  justify-content: center;
+  align-items: center;
+  border: black solid;
+  padding: 2%;
+  margin-bottom: 5%;
+}
+
+/*************************
+      6. Profile Page
+*************************/
+
+.profile-list-container {
+  list-style-type: none;
+  padding: 3rem;
+  font-size: large;
+  line-height: 3rem;
+  background-color: white;
+}
+
+.profile-list-container li {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border: 2.5px solid black;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.profile-list-container li img {
+  width: 16rem;
+  height: 20rem;
+  padding-right: 2rem;
+  margin-top: 5%;
+  margin-left: 5%;
+  position: relative;
+}
+
+.user-info{
+  border: 2px; 
+  margin-top: 0%;
+  margin-bottom: 5%;
+  padding: 3%;
+  width: 60%; 
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
