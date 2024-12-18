@@ -6,7 +6,7 @@ import { Route, BrowserRouter } from "react-router-dom";
 import "./App.css";
 import Home from "./Pages/Home";
 import Shop from "./Pages/Shop";
-import Product from "./Pages/Product";
+import Product from "./Pages/product";
 import Cart from "./Pages/Cart";
 import Login from "./Pages/Login";
 import Profile from "./Pages/Profile";
@@ -19,7 +19,7 @@ import ARViewerPage from "./Pages/ARViewerPage";
 import NavbarComp from "./components/navbar";
 import FooterComp from "./components/footer";
 import EditProduct from "./Pages/EditProduct";
-
+import Success from "./Pages/success";
 
 class App extends Component {
   render() {
@@ -42,7 +42,7 @@ class App extends Component {
         <Route path="/contact-us" component={Contact} />
         <Route path="/ar-viewer" element={<ARViewerPage />} />
         <Route path="/EditProduct" exact component={EditProduct} />
-
+        <Route path="/success" exact component={Success} />
         <FooterComp />
       </BrowserRouter>
     );

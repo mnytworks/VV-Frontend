@@ -1,175 +1,160 @@
-// This is the Cart Page - will show products (if any) that are in the cart and wishlist.
-
-// <Container id="content">
-// <CartComp products={this.state.user.cart} />
-// </Container>
-
 import React, { Component } from "react";
 import { Container } from "react-bootstrap";
+import Axios from "axios";
 import CartComp from "../components/cart";
 import WishComp from "../components/wishlist";
-import Axios from "axios";
-
 
 class Cart extends Component {
-
   state = {
     products: [],
     wishlist: [],
   };
 
   componentDidMount() {
-    Axios({
-      method: "GET",
-      withCredentials: true,
-      url: "http://localhost:5000/getcartitems",
-    }).then((res) => {
-
-      if (res.data === "Please log in to proceed!"){
-        alert("Please log in to proceed!");
-      }
-
-      else{
-        this.setState({ products: res.data });
-        //console.log(res.data);
-      }
-      
-    });
-
-    Axios({
-      method: "GET",
-      withCredentials: true,
-      url: "http://localhost:5000/getwishlistitems",
-    }).then((res) => {
-
-      if (res.data === "Please log in to proceed!"){
-        console.log("Please log in to proceed!");
-      }
-
-      else{
-        this.setState({ wishlist: res.data });
-        //console.log(res.data);
-      }
-      
-    });
+    this.fetchCartItems();
+    this.fetchWishlistItems();
   }
 
-  moveToWishlist(productId){
-    Axios({
-      method: "POST",
-      withCredentials: true,
-      data:{
-        productId: productId,
-      },
-      url: "http://localhost:5000/movetowishlist",
-    }).then((res) => {
-      console.log(res);
-      window.location.reload(false);
-      alert(res.data);
-    });
-    //console.log(productId);
-  }
+  fetchCartItems = async () => {
+    try {
+      const res = await Axios.get("http://localhost:5000/getcartitems", {
+        withCredentials: true,
+      });
+      this.setState({ products: res.data });
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+      alert("Failed to fetch cart items.");
+    }
+  };
 
-  removeFromCart(productId){
-    Axios({
-      method: "POST",
-      withCredentials: true,
-      data:{
-        productId: productId,
-      },
-      url: "http://localhost:5000/removefromcart",
-    }).then((res) => {
-      console.log(res);
-      window.location.reload(false);
-      alert(res.data);
-    });
-    //console.log(productId);
-  }
+  fetchWishlistItems = async () => {
+    try {
+      const res = await Axios.get("http://localhost:5000/getwishlistitems", {
+        withCredentials: true,
+      });
+      this.setState({ wishlist: res.data });
+    } catch (error) {
+      console.error("Error fetching wishlist items:", error);
+      alert("Failed to fetch wishlist items.");
+    }
+  };
 
-  removeFromWishlist(productId){
-    Axios({
-      method: "POST",
-      withCredentials: true,
-      data:{
-        productId: productId,
-      },
-      url: "http://localhost:5000/removefromwishlist",
-    }).then((res) => {
-      console.log(res);
-      window.location.reload(false);
-      alert(res.data);
-    });
-    //console.log(productId);
-  }
+  moveToWishlist = async (productId) => {
+    try {
+      await Axios.post(
+        "http://localhost:5000/movetowishlist",
+        { productId },
+        { withCredentials: true }
+      );
+      this.fetchCartItems();
+    } catch (error) {
+      console.error("Error moving product to wishlist:", error);
+    }
+  };
 
-  moveToCart(productId){
-    Axios({
-      method: "POST",
-      withCredentials: true,
-      data:{
-        productId: productId,
-      },
-      url: "http://localhost:5000/movetocart",
-    }).then((res) => {
-      console.log(res);
-      window.location.reload(false);
-      alert(res.data);
-    });
-    //console.log(productId);
-  }
+  removeFromCart = async (productId) => {
+    try {
+      await Axios.post(
+        "http://localhost:5000/removefromcart",
+        { productId },
+        { withCredentials: true }
+      );
+      this.fetchCartItems();
+    } catch (error) {
+      console.error("Error removing product from cart:", error);
+    }
+  };
 
-  buyProduct(productId){
-    Axios({
-      method: "POST",
-      withCredentials: true,
-      data:{
-        productId: productId,
-      },
-      url: "http://localhost:5000/buyproduct",
-    }).then((res) => {
-      console.log(res.data);
-      window.location.reload(false);
-      alert(res.data);
-    });
-    //console.log(productId);
-  }
+  moveToCart = async (productId) => {
+    try {
+      await Axios.post(
+        "http://localhost:5000/movetocart",
+        { productId },
+        { withCredentials: true }
+      );
+      this.fetchWishlistItems();
+      this.fetchCartItems();
+    } catch (error) {
+      console.error("Error moving product to cart:", error);
+    }
+  };
 
-  buyAllProducts(){
-    Axios({
-      method: "POST",
-      withCredentials: true,
-      url: "http://localhost:5000/buyallproducts",
-    }).then((res) => {
-      console.log(res.data);
-      window.location.reload(false);
-      alert(res.data);
-    });
-    //console.log(productId);
-  }
+  removeFromWishlist = async (productId) => {
+    try {
+      await Axios.post(
+        "http://localhost:5000/removefromwishlist",
+        { productId },
+        { withCredentials: true }
+      );
+      this.fetchWishlistItems();
+    } catch (error) {
+      console.error("Error removing product from wishlist:", error);
+    }
+  };
+
+  // Single Product Purchase
+  buyProduct = async (productId) => {
+    const product = this.state.products.find((p) => p._id === productId);
+    if (!product) return;
+
+    try {
+      const response = await Axios.post("http://localhost:5000/create-checkout-session", {
+        items: [{ name: product.name, price: product.price }],
+      });
+
+      window.location.href = response.data.url; // Redirect to Stripe Checkout
+    } catch (error) {
+      console.error("Error initiating payment:", error);
+      alert("Failed to initiate payment.");
+    }
+  };
+
+  // Buy All Products
+  buyAllProducts = async () => {
+    const lineItems = this.state.products.map((product) => ({
+      name: product.name,
+      price: product.price,
+      quantity: 1,
+    }));
+
+    try {
+      const response = await Axios.post("http://localhost:5000/create-checkout-session", {
+        items: lineItems,
+      });
+
+      window.location.href = response.data.url; // Redirect to Stripe Checkout
+    } catch (error) {
+      console.error("Error initiating payment for all products:", error);
+      alert("Failed to process payment for all products.");
+    }
+  };
 
   render() {
     return (
       <div>
-
         <center>
-          <h1 style={{fontSize: "4rem"}}> SHOPPING CART </h1>
+          <h1 style={{ fontSize: "4rem", marginTop: "20px" }}>SHOPPING CART</h1>
         </center>
 
-        <div className="container">
+        <div className="container" style={{ marginTop: "20px" }}>
           <Container id="content">
-            <CartComp products={this.state.products}
-                                moveToWishlist={this.moveToWishlist}
-                                removeFromCart={this.removeFromCart}
-                                buyProduct={this.buyProduct}
-                                buyAllProducts={this.buyAllProducts} />
+            <CartComp
+              products={this.state.products}
+              moveToWishlist={this.moveToWishlist}
+              removeFromCart={this.removeFromCart}
+              buyProduct={this.buyProduct}
+              buyAllProducts={this.buyAllProducts}
+            />
           </Container>
         </div>
 
-        <div className="container">
+        <div className="container" style={{ marginTop: "40px" }}>
           <Container id="content">
-            <WishComp products={this.state.wishlist}
-                                moveToCart={this.moveToCart}
-                                removeFromWishlist={this.removeFromWishlist} />
+            <WishComp
+              products={this.state.wishlist}
+              moveToCart={this.moveToCart}
+              removeFromWishlist={this.removeFromWishlist}
+            />
           </Container>
         </div>
       </div>
