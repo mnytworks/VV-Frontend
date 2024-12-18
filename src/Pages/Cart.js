@@ -17,7 +17,7 @@ class Cart extends Component {
 
   fetchCartItems = async () => {
     try {
-      const res = await Axios.get("http://localhost:5000/getcartitems", {
+      const res = await Axios.get("https://vv-backend-eud6.onrender.com/getcartitems", {
         withCredentials: true,
       });
       this.setState({ products: res.data });
@@ -29,7 +29,7 @@ class Cart extends Component {
 
   fetchWishlistItems = async () => {
     try {
-      const res = await Axios.get("http://localhost:5000/getwishlistitems", {
+      const res = await Axios.get("https://vv-backend-eud6.onrender.com/getwishlistitems", {
         withCredentials: true,
       });
       this.setState({ wishlist: res.data });
@@ -42,7 +42,7 @@ class Cart extends Component {
   moveToWishlist = async (productId) => {
     try {
       await Axios.post(
-        "http://localhost:5000/movetowishlist",
+        "https://vv-backend-eud6.onrender.com/movetowishlist",
         { productId },
         { withCredentials: true }
       );
@@ -55,7 +55,7 @@ class Cart extends Component {
   removeFromCart = async (productId) => {
     try {
       await Axios.post(
-        "http://localhost:5000/removefromcart",
+        "https://vv-backend-eud6.onrender.com/removefromcart",
         { productId },
         { withCredentials: true }
       );
@@ -68,7 +68,7 @@ class Cart extends Component {
   moveToCart = async (productId) => {
     try {
       await Axios.post(
-        "http://localhost:5000/movetocart",
+        "https://vv-backend-eud6.onrender.com/movetocart",
         { productId },
         { withCredentials: true }
       );
@@ -82,7 +82,7 @@ class Cart extends Component {
   removeFromWishlist = async (productId) => {
     try {
       await Axios.post(
-        "http://localhost:5000/removefromwishlist",
+        "https://vv-backend-eud6.onrender.com/removefromwishlist",
         { productId },
         { withCredentials: true }
       );
@@ -98,7 +98,7 @@ class Cart extends Component {
     if (!product) return;
 
     try {
-      const response = await Axios.post("http://localhost:5000/create-checkout-session", {
+      const response = await Axios.post("https://vv-backend-eud6.onrender.com/create-checkout-session", {
         items: [{ name: product.name, price: product.price }],
       });
 
@@ -118,7 +118,7 @@ class Cart extends Component {
     }));
 
     try {
-      const response = await Axios.post("http://localhost:5000/create-checkout-session", {
+      const response = await Axios.post("https://vv-backend-eud6.onrender.com/create-checkout-session", {
         items: lineItems,
       });
 
