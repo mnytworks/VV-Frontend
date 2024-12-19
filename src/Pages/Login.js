@@ -15,58 +15,59 @@ export default function Login() {
   const history = useHistory();
 
   // Register function
-  const register = () => {
-    Axios({
-      method: "POST",
-      data: {
-        username: registerUsername,
-        password: registerPassword,
-        mobile: registerMobile,
-        email: registerEmail,
-      },
-      headers: { "Content-Type": "application/json" }, // Set header
-      withCredentials: true,
-      url: "https://vv-backend-eud6.onrender.com/register",
-    })
-      .then((res) => {
-        console.log(res);
-        alert(res.data);
-      })
-      .catch((err) => {
-        console.error("Registration Error:", err);
-        alert("Registration failed! Please try again.");
-      });
+  const register = async () => {
+    try {
+      const res = await Axios.post(
+        "https://vv-backend-eud6.onrender.com/register",
+        {
+          username: registerUsername,
+          password: registerPassword,
+          mobile: registerMobile,
+          email: registerEmail,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true, // Include credentials for session
+        }
+      );
+      console.log(res);
+      alert(res.data);
+    } catch (err) {
+      console.error("Registration Error:", err.response?.data || err.message);
+      alert("Registration failed! Please try again.");
+    }
   };
 
   // Login function with admin check
-  const login = () => {
-    Axios({
-      method: "POST",
-      data: {
-        username: loginUsername,
-        password: loginPassword,
-        adminCode: adminCode, // Send the admin code for validation
-      },
-      headers: { "Content-Type": "application/json" },
-      withCredentials: true,
-      url: "https://vv-backend-eud6.onrender.com/login",
-    })
-      .then((res) => {
-        console.log(res);
-        if (res.data.isAdmin) {
-          alert("Admin login successful!");
-          history.push("/editproduct"); // Redirect to EditProduct page if admin
-        } else if (res.data.message === "User logged in") {
-          alert("Login successful!");
-          history.push("/profile"); // Redirect to user profile after login
-        } else {
-          alert(res.data.message); // Display any errors
+  const login = async () => {
+    try {
+      const res = await Axios.post(
+        "https://vv-backend-eud6.onrender.com/login",
+        {
+          username: loginUsername,
+          password: loginPassword,
+          adminCode: adminCode, // Send the admin code for validation
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true, // Include credentials for session
         }
-      })
-      .catch((error) => {
-        console.error("Login error:", error);
-        alert("Login failed. Please check your credentials.");
-      });
+      );
+
+      console.log(res);
+      if (res.data.isAdmin) {
+        alert("Admin login successful!");
+        history.push("/editproduct"); // Redirect to EditProduct page if admin
+      } else if (res.data.message === "User logged in successfully") {
+        alert("Login successful!");
+        history.push("/profile"); // Redirect to user profile after login
+      } else {
+        alert(res.data.message); // Display any errors
+      }
+    } catch (error) {
+      console.error("Login error:", error.response?.data || error.message);
+      alert("Login failed. Please check your credentials.");
+    }
   };
 
   // Google OAuth Authentication
@@ -83,22 +84,26 @@ export default function Login() {
         <h1>Register Now!</h1>
         <input
           placeholder="Username"
+          value={registerUsername}
           onChange={(e) => setRegisterUsername(e.target.value)}
         />
         <br />
         <input
           placeholder="Mobile Number"
+          value={registerMobile}
           onChange={(e) => setRegisterMobile(e.target.value)}
         />
         <br />
         <input
           placeholder="Email ID"
+          value={registerEmail}
           onChange={(e) => setRegisterEmail(e.target.value)}
         />
         <br />
         <input
           placeholder="Password"
           type="password"
+          value={registerPassword}
           onChange={(e) => setRegisterPassword(e.target.value)}
         />
         <br />
@@ -111,17 +116,20 @@ export default function Login() {
         <h1>Login</h1>
         <input
           placeholder="Username"
+          value={loginUsername}
           onChange={(e) => setLoginUsername(e.target.value)}
         />
         <br />
         <input
           placeholder="Password"
           type="password"
+          value={loginPassword}
           onChange={(e) => setLoginPassword(e.target.value)}
         />
         <br />
         <input
           placeholder="Admin Code (if admin)"
+          value={adminCode}
           onChange={(e) => setAdminCode(e.target.value)}
         />
         <br />

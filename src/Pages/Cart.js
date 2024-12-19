@@ -19,11 +19,14 @@ class Cart extends Component {
     try {
       const res = await Axios.get("https://vv-backend-eud6.onrender.com/getcartitems", {
         withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
       this.setState({ products: res.data });
     } catch (error) {
       console.error("Error fetching cart items:", error);
-      alert("Failed to fetch cart items.");
+      alert("Failed to fetch cart items. Please log in again.");
     }
   };
 
@@ -31,11 +34,14 @@ class Cart extends Component {
     try {
       const res = await Axios.get("https://vv-backend-eud6.onrender.com/getwishlistitems", {
         withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
       this.setState({ wishlist: res.data });
     } catch (error) {
       console.error("Error fetching wishlist items:", error);
-      alert("Failed to fetch wishlist items.");
+      alert("Failed to fetch wishlist items. Please log in again.");
     }
   };
 
@@ -44,11 +50,17 @@ class Cart extends Component {
       await Axios.post(
         "https://vv-backend-eud6.onrender.com/movetowishlist",
         { productId },
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
       this.fetchCartItems();
     } catch (error) {
       console.error("Error moving product to wishlist:", error);
+      alert("Failed to move product to wishlist.");
     }
   };
 
@@ -57,11 +69,17 @@ class Cart extends Component {
       await Axios.post(
         "https://vv-backend-eud6.onrender.com/removefromcart",
         { productId },
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
       this.fetchCartItems();
     } catch (error) {
       console.error("Error removing product from cart:", error);
+      alert("Failed to remove product from cart.");
     }
   };
 
@@ -70,12 +88,18 @@ class Cart extends Component {
       await Axios.post(
         "https://vv-backend-eud6.onrender.com/movetocart",
         { productId },
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
       this.fetchWishlistItems();
       this.fetchCartItems();
     } catch (error) {
       console.error("Error moving product to cart:", error);
+      alert("Failed to move product to cart.");
     }
   };
 
@@ -84,11 +108,17 @@ class Cart extends Component {
       await Axios.post(
         "https://vv-backend-eud6.onrender.com/removefromwishlist",
         { productId },
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
       this.fetchWishlistItems();
     } catch (error) {
       console.error("Error removing product from wishlist:", error);
+      alert("Failed to remove product from wishlist.");
     }
   };
 
@@ -98,9 +128,17 @@ class Cart extends Component {
     if (!product) return;
 
     try {
-      const response = await Axios.post("https://vv-backend-eud6.onrender.com/create-checkout-session", {
-        items: [{ name: product.name, price: product.price }],
-      });
+      const response = await Axios.post(
+        "https://vv-backend-eud6.onrender.com/create-checkout-session",
+        {
+          items: [{ name: product.name, price: product.price }],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       window.location.href = response.data.url; // Redirect to Stripe Checkout
     } catch (error) {
@@ -118,9 +156,15 @@ class Cart extends Component {
     }));
 
     try {
-      const response = await Axios.post("https://vv-backend-eud6.onrender.com/create-checkout-session", {
-        items: lineItems,
-      });
+      const response = await Axios.post(
+        "https://vv-backend-eud6.onrender.com/create-checkout-session",
+        { items: lineItems },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       window.location.href = response.data.url; // Redirect to Stripe Checkout
     } catch (error) {
