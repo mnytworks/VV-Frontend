@@ -1,5 +1,3 @@
-// This is the Profile Page - users can view their account details and update their information here.
-
 import React, { Component } from "react";
 import "../App.css";
 import { Container, Row, Col } from "react-bootstrap";
@@ -16,110 +14,119 @@ class Profile extends Component {
     orders: [],
     cart: [],
     wishlist: [],
-    modal: false,
-    newmobile: "", // Ensure these are strings for input fields
+    newmobile: "",
     newaddress: "",
   };
 
   componentDidMount() {
-    // Fetch user details
-    Axios({
-      method: "GET",
-      withCredentials: true,
-      url: "https://vv-backend-eud6.onrender.com/user",
-    })
-      .then((res) => {
-        if (res.data === "Please login first") {
-          alert(res.data);
-        } else {
-          this.setState({
-            mobile: res.data.mobile,
-            name: res.data.username,
-            address: res.data.address,
-          });
-        }
-      })
-      .catch((err) => console.error("Error fetching user data:", err));
-
-    // Fetch cart items
-    Axios({
-      method: "GET",
-      withCredentials: true,
-      url: "https://vv-backend-eud6.onrender.com/getcartitems",
-    })
-      .then((res) => {
-        if (res.data !== "Please log in to proceed!") {
-          this.setState({ cart: res.data });
-        }
-      })
-      .catch((err) => console.error("Error fetching cart items:", err));
-
-    // Fetch wishlist items
-    Axios({
-      method: "GET",
-      withCredentials: true,
-      url: "https://vv-backend-eud6.onrender.com/getwishlistitems",
-    })
-      .then((res) => {
-        if (res.data !== "Please log in to proceed!") {
-          this.setState({ wishlist: res.data });
-        }
-      })
-      .catch((err) => console.error("Error fetching wishlist items:", err));
-
-    // Fetch order items
-    Axios({
-      method: "GET",
-      withCredentials: true,
-      url: "https://vv-backend-eud6.onrender.com/getorderitems",
-    })
-      .then((res) => {
-        if (res.data !== "Please log in to proceed!") {
-          this.setState({ orders: res.data });
-        }
-      })
-      .catch((err) => console.error("Error fetching order items:", err));
+    this.fetchUserDetails();
+    this.fetchCartItems();
+    this.fetchWishlistItems();
+    this.fetchOrderItems();
   }
 
+  fetchUserDetails = async () => {
+    try {
+      const res = await Axios.get("https://vv-backend-eud6.onrender.com/user", {
+        withCredentials: true,
+      });
+      this.setState({
+        mobile: res.data.mobile,
+        name: res.data.username,
+        address: res.data.address,
+      });
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      if (error.response?.status === 401) {
+        alert("Unauthorized access! Please login again.");
+        window.location.href = "/login"; // Redirect to login
+      }
+    }
+  };
+
+  fetchCartItems = async () => {
+    try {
+      const res = await Axios.get(
+        "https://vv-backend-eud6.onrender.com/getcartitems",
+        { withCredentials: true }
+      );
+      this.setState({ cart: res.data });
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+      if (error.response?.status === 401) {
+        alert("Unauthorized access! Please login again.");
+        window.location.href = "/login";
+      }
+    }
+  };
+
+  fetchWishlistItems = async () => {
+    try {
+      const res = await Axios.get(
+        "https://vv-backend-eud6.onrender.com/getwishlistitems",
+        { withCredentials: true }
+      );
+      this.setState({ wishlist: res.data });
+    } catch (error) {
+      console.error("Error fetching wishlist items:", error);
+      if (error.response?.status === 401) {
+        alert("Unauthorized access! Please login again.");
+        window.location.href = "/login";
+      }
+    }
+  };
+
+  fetchOrderItems = async () => {
+    try {
+      const res = await Axios.get(
+        "https://vv-backend-eud6.onrender.com/getorderitems",
+        { withCredentials: true }
+      );
+      this.setState({ orders: res.data });
+    } catch (error) {
+      console.error("Error fetching order items:", error);
+      if (error.response?.status === 401) {
+        alert("Unauthorized access! Please login again.");
+        window.location.href = "/login";
+      }
+    }
+  };
+
   logout = () => {
-    Axios({
-      method: "GET",
+    Axios.get("https://vv-backend-eud6.onrender.com/logout", {
       withCredentials: true,
-      url: "https://vv-backend-eud6.onrender.com/logout",
     })
       .then(() => {
         alert("You are logged out!");
         window.location.href = "/login"; // Redirect to login page
       })
-      .catch((err) => console.error("Error during logout:", err));
+      .catch((error) => console.error("Error during logout:", error));
   };
 
   updateNum = () => {
-    Axios({
-      method: "POST",
-      data: { mobile: this.state.newmobile },
-      withCredentials: true,
-      url: "https://vv-backend-eud6.onrender.com/update/number",
-    })
+    Axios.post(
+      "https://vv-backend-eud6.onrender.com/update/number",
+      { mobile: this.state.newmobile },
+      { withCredentials: true }
+    )
       .then(() => {
         alert("Mobile number updated successfully!");
-        window.location.reload();
+        this.fetchUserDetails();
       })
-      .catch((err) => console.error("Error updating mobile number:", err));
+      .catch((error) => console.error("Error updating mobile number:", error));
   };
 
   updateAdd = () => {
-    Axios({
-      method: "POST",
-      data: { address: this.state.newaddress },
-      withCredentials: true,
-      url: "https://vv-backend-eud6.onrender.com/update/address", // Corrected endpoint
-    })
+    Axios.post(
+      "https://vv-backend-eud6.onrender.com/update/address",
+      { address: this.state.newaddress },
+      { withCredentials: true }
+    )
       .then(() => {
         alert("Address updated successfully!");
-        window.location.reload();
+        this.fetchUserDetails();
       })
-      .catch((err) => console.error("Error updating address:", err));
+      .catch((error) => console.error("Error updating address:", error));
   };
 
   handleNumChange = (e) => {
@@ -184,30 +191,15 @@ class Profile extends Component {
         <Container>
           <Row>
             <Col xs={12} md={8}>
-              <Image
-                src="https://res.cloudinary.com/dzky4f4zb/image/upload/v1602847816/yourcart_hb4g2u.png"
-                fluid
-              />
-              <h2 style={{ marginTop: "5%" }}>
-                You're almost there! Want to <Link to="/cart">Checkout</Link>?
-              </h2>
               <ProfileComp products={this.state.cart} />
             </Col>
 
             <Col xs={6} md={4}>
-              <Image
-                src="https://res.cloudinary.com/dzky4f4zb/image/upload/v1602847974/wishlist_x6cv29.png"
-                fluid
-              />
               <ProfileComp products={this.state.wishlist} />
             </Col>
           </Row>
         </Container>
 
-        <Image
-          src="https://res.cloudinary.com/dzky4f4zb/image/upload/v1602848155/previousorders_i2wtru.png"
-          fluid
-        />
         <ProfileComp products={this.state.orders} />
       </div>
     );
